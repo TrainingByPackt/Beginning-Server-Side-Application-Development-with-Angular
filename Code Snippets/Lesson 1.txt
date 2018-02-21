@@ -1,0 +1,580 @@
+***Topic D: Configuring Global Styles - Exercise-Adding Bootstrap and Font Awesome***
+
+Step 2
+
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css');
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+
+
+***Topic D: Configuring Global Styles - Exercise-Show an icon on the page***
+
+Step 1
+
+<h1 class="text-center mt-5">
+  <i class="fa fa-thumbs-up"></i>
+</h1>
+
+
+
+***Topic E: Creating UI Modules and Components - Exercise-Generate the UiModule***
+
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@NgModule({
+  imports: [
+    CommonModule
+  ],
+  declarations: []
+})
+export class UiModule { }
+
+
+
+***Topic E: Creating UI Modules and Components - Exercise-Import our UiModule***
+
+Step 4
+
+@NgModule({
+  ...
+  imports: [
+    // other imports
+    UiModule
+  ],
+  ...
+})
+
+
+
+***Topic E: Creating UI Modules and Components - Exercise-Display the current route***
+
+Step 3
+
+<router-outlet></router-outlet>
+
+
+
+***Topic E: Creating UI Modules and Components - Exercise-Add a new route***
+
+Step 2
+
+import { LayoutComponent } from './ui/components/layout/layout.component'
+
+Step 5
+
+{ path: '', component: LayoutComponent, children: [] },
+
+Complete code
+
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { LayoutComponent } from './ui/components/layout/layout.component'
+
+const routes: Routes = [
+  { path: '', component: LayoutComponent, children: [] },
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+
+
+***Topic E: Creating UI Modules and Components - Exercise-Building our layout***
+
+Step 3
+
+app-header placeholder
+<div class="container my-5">
+   <router-outlet></router-outlet>
+</div>
+app-footer placeholder
+
+Error correction Step 2
+
+import { RouterModule } from '@angular/router';
+
+
+
+***Topic E: Creating UI Modules and Components - Exercise-Update the LayoutComponent to reference our new HeaderComponent***
+
+Step 2
+
+<app-header></app-header>
+
+
+
+
+***Topic E: Creating UI Modules and Components - Exercise-Create the actual header***
+
+Step 3
+
+public logo = 'assets/logo.svg';
+public title = 'Angular Social';
+public items = [{ label: 'Posts', url: '/posts'}];
+
+Step 4
+
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+   <a class="navbar-brand" routerLink="/">
+     <img [src]="logo" width="30" height="30" alt="">
+
+   </a>
+   <div class="collapse navbar-collapse">
+     <ul class="navbar-nav">
+       <li class="nav-item" *ngFor="let item of items" routerLinkActive="active">
+         <a class="nav-link" [routerLink]="item.url">{{item.label}}</a>
+       </li>
+     </ul>
+   </div>
+</nav>
+
+
+
+***Topic E: Creating UI Modules and Components - Exercise-Update the LayoutComponent to reference our new FooterComponent***
+
+Step 2
+
+<app-footer></app-footer>
+
+
+
+***Topic E: Creating UI Modules and Components - Exercise-Create the actual footer***
+
+Step 2
+
+public developer = 'YOUR_NAME_PLACEHOLDER';
+public year = 'YEAR_PLACEHOLDER';
+
+Step 4
+
+<nav class="navbar fixed-bottom navbar-expand navbar-dark bg-dark">
+   <div class="navbar-text m-auto">
+      {{developer}} <i class="fa fa-copyright"></i> {{year}}
+   </div>
+</nav>
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Lazy load our PostsModule***
+
+Step 4
+
+{ path: '', redirectTo: '/posts', pathMatch: 'full'},
+{ path: 'posts', loadChildren: './posts/posts.module#PostsModule' },
+
+const routes: Routes = [
+  { path: '', component: LayoutComponent, children: [
+    { path: '', redirectTo: '/posts', pathMatch: 'full'},
+    { path: 'posts', loadChildren: './posts/posts.module#PostsModule' },
+  ] },
+];
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Create the PostsComponent***
+
+Step 4
+
+import { PostsComponent } from './containers/posts/posts.component'
+
+Step 5
+
+{ path: '', component: PostsComponent },
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Create the ProfileComponent***
+
+Step 4
+
+import { ProfileComponent } from './containers/profile/profile.component'
+
+Step 5
+
+{ path: ':profileId', component: ProfileComponent },
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Add dummy posts data***
+
+Step 2
+
+public posts = []
+
+Step 4
+
+for(let i = 1; i < 10; i++) {
+   this.posts.push({ id: i, text: 'This is post with id: ' + i })
+}
+
+Step 5
+
+<div *ngFor="let post of posts">
+   <a [routerLink]="post.id">
+     {{post.text}}
+   </a>
+</div>
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Add dummy profiles data***
+
+Step 2
+
+public profile = { id: null };
+
+Step 3
+
+import { ActivatedRoute } from '@angular/router';
+
+Step 4
+
+constructor(private route:ActivatedRoute){}
+
+Step 5
+
+this.route.params.subscribe(res => this.profile.id = 'profileId = ' + res['profileId'])
+
+Step 6
+
+<p>
+  {{profile.id}}
+</p>
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Reference our new PostsService in our container components***
+
+Step 2
+
+import { PostsService } from '../../services/posts.service';
+
+Step 3
+
+constructor(private postsService: PostsService) { }
+
+Step 4
+
+ngOnInit() {
+  this.postsService.getPosts()
+    .map(res => res['items'])
+    .subscribe((result: any) => this.posts = result)
+}
+
+Step 6
+
+import { PostsService } from '../services/posts.service';
+
+Step 7
+
+constructor(private route: ActivatedRoute, private postsService: PostsService) { }
+
+Step 8
+
+this.postsService.getProfile(this.route.snapshot.params['profileId'])
+  .subscribe((result: any) => this.profile = result)
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Define the public methods***
+
+Step 2
+
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment'
+
+Step 3
+
+constructor(private http: HttpClient) { }
+
+Step 4
+
+getPosts() {
+   const url = `${environment.apiUrl}/posts/timeline?filter[where][type]=text`
+   return this.http.get(url)
+}
+
+Step 5
+
+getProfile(profileId) {
+   const url = `${environment.apiUrl}/profiles/${profileId}?filter[include]=posts`
+   return this.http.get(url)
+}
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Import HttpClientModule in our AppModule***
+
+Step 2
+
+import { HttpClientModule } from '@angular/common/http';
+
+Step 3
+
+@NgModule({
+   ...
+   imports: [
+     ...
+     HttpClientModule,
+     ...
+   ],
+   ...
+})
+
+Error correction-Step 2
+
+import 'rxjs/add/operator/map';
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Create the PostListComponent***
+
+Step 2
+
+<app-post-list [posts]="posts"></app-post-list>
+
+Step 7
+
+@Input() posts: any[]
+
+Step 8
+
+<div *ngFor="let post of posts" class="mb-3">
+   <app-post-item [post]="post"></app-post-item>
+</div>
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Create the PostItemComponent***
+
+Step 5
+
+@Input() post: any;
+
+Step 6
+
+<!-- The row and the col make sure the content is always centered -->
+ <div class="row">
+   <div class="col-md-8 offset-md-2">
+     <!-- The card is where the message is shown -->
+     <div class="card">
+       <div class="card-body">
+         <!-- We use the Bootstrap 'media' component to show an avatar with content -->
+         <div class="media">
+           <img class="avatar mr-3 rounded" [attr.src]="post?.profile?.avatar">
+           <div class="media-body">
+             <!-- The full name of the author is used to navigate to the post detail -->
+             <h5>
+               <a [routerLink]="post?.profile?.id"> {{post?.profile?.fullName}} </a>
+               <span class="date float-right text-muted">
+
+               </span>
+             </h5>
+             <!-- The text of the post is shown in a simple paragraph tag-->
+             <p>{{post?.text}}</p>
+           </div>
+         </div> <!-- End media -->
+       </div>
+     </div> <!-- End card -->
+   </div>
+ </div> <!-- End row-->
+
+Step 7
+
+styles: [`
+   img.avatar {
+     height: 60px;
+     width: 60px;
+   }
+   span.date {
+     font-size: small;
+   }
+`],
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Create the ProfileItemComponent***
+
+Step 2
+
+<app-profile-item [profile]="profile"></app-profile-item>
+
+Step 7
+
+@Input() profile: any;
+
+Step 8
+
+<div class="row">
+ <div class="col-md-8 offset-md-2">
+   <div class="card mb-3" *ngFor="let post of profile.posts">
+     <div class="card-body">
+       <div class="media">
+         <img class="avatar mr-3 rounded" [attr.src]="profile?.avatar">
+         <div class="media-body">
+           <h5>
+             <a [routerLink]="profile?.id"> {{profile?.fullName}} </a>
+             <span class="date float-right text-muted">
+
+             </span>
+           </h5>
+           <p>{{post?.text}}</p>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+
+Step 9
+
+styles: [`
+img.avatar {
+ height: 60px;
+ width: 60px;
+}
+span.date {
+ font-size: small;
+}
+`],
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Create resolver - 1***
+
+Step 3
+
+import { Injectable } from '@angular/core'
+import { Resolve } from '@angular/router'
+import { PostsService } from '../services/posts.service'
+
+Step 4
+
+@Injectable()
+export class PostsResolver {}
+
+Step 5
+
+@Injectable()
+export class PostsResolver implements Resolve<any> {
+}
+
+Step 6
+
+constructor(private postsService: PostsService) {}
+
+Step 7
+
+resolve() {
+  return this.postsService.getPosts()
+}
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Create resolver - 2***
+
+Step 3
+
+import { Injectable } from '@angular/core'
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router'
+import { PostsService } from '../services/posts.service'
+
+Step 4
+
+@Injectable()
+export class ProfileResolver {}
+
+Step 5
+
+@Injectable()
+export class ProfileResolver implements Resolve<any> {
+}
+
+Step 6
+
+constructor(private postsService: PostsService) {}
+
+Step 7
+
+resolve(route: ActivatedRouteSnapshot) {
+}
+
+Step 8
+
+resolve(route: ActivatedRouteSnapshot) {
+  return this.postsService.getProfile(route.params['profileId'])
+}
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Import our resolvers***
+
+Step 2
+
+import { PostsResolver } from './resolvers/posts-resolver'
+import { ProfileResolver } from './resolvers/profile-resolver'
+
+Step 3
+
+{ path: '', component: PostsComponent, resolve: { posts: PostsResolver } },
+{ path: ':profileId', component: ProfileComponent, resolve: { profile: ProfileResolver } },
+
+Error correction - Step 2
+
+import { PostsResolver } from './resolvers/posts-resolver'
+import { ProfileResolver } from './resolvers/profile-resolver'
+
+Error correction - Step 3
+
+providers: [PostsService, PostsResolver, ProfileResolver]
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Use the data resolved by the router - 1***
+
+Step 2
+
+import { ActivatedRoute } from '@angular/router'
+
+Step 4
+
+constructor(private route: ActivatedRoute) { }
+
+Step 5
+
+ngOnInit() {
+  this.route.data
+    .map(data => data['posts'])
+    .map(data => data['items'])
+    .subscribe((result: any) => this.posts = result)
+}
+
+Step 6
+
+public posts: any
+
+
+
+***Topic F: Creating Application Module and Components - Exercise-Use the data resolved by the router - 2***
+
+Step 3
+
+constructor(private route: ActivatedRoute) { }
+
+Step 4
+
+this.route.data
+  .map(data => data['profile'])
+  .subscribe((result: any) => this.profile = result)
+
+
+Step 5
+
+public profile: any;
+
+
+
+
