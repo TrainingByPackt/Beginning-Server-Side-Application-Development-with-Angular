@@ -70,10 +70,13 @@ Step 5
 
 app.set('view engine', 'html');
 app.set('views', staticRoot);
+
+Step 6
+
 app.get('*.*', express.static(staticRoot));
 app.get('*', (req, res) => res.render('index', { req }));
 
-Step 6
+Step 7
 
 app.listen(PORT, () => console.log(`Server listening on http://localhost:${PORT}`));
 
