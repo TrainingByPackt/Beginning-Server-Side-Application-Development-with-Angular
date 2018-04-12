@@ -205,13 +205,13 @@ Step 2
 
 public posts = []
 
-Step 4
+Step 5
 
 for(let i = 1; i < 10; i++) {
    this.posts.push({ id: i, text: 'This is post with id: ' + i })
 }
 
-Step 5
+Step 6
 
 <div *ngFor="let post of posts">
    <a [routerLink]="post.id">
