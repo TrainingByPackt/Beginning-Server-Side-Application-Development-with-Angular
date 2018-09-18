@@ -1,5 +1,5 @@
 [![GitHub issues](https://img.shields.io/github/issues/TrainingByPackt/Beginning-Server-Side-Application-Development-with-Angular.svg)](https://github.com/TrainingByPackt/Beginning-Server-Side-Application-Development-with-Angular/issues)
-[![GitHub forks](https://img.shields.io/github/forks/TrainingByPackt/Beginning-Server-Side-Application-Development-with-Angulars.svg)](https://github.com/TrainingByPackt/Beginning-Server-Side-Application-Development-with-Angular/network)
+[![GitHub forks](https://img.shields.io/github/forks/TrainingByPackt/Beginning-Server-Side-Application-Development-with-Angular.svg)](https://github.com/TrainingByPackt/Beginning-Server-Side-Application-Development-with-Angular/network)
 [![GitHub stars](https://img.shields.io/github/stars/TrainingByPackt/Beginning-Server-Side-Application-Development-with-Angular.svg)](https://github.com/TrainingByPackt/Beginning-Server-Side-Application-Development-with-Angular/stargazers)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/TrainingByPackt/Beginning-Server-Side-Application-Development-with-Angular/pulls)
 
